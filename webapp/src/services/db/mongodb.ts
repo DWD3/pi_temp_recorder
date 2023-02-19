@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb'
+const MongoClient = require('mongodb')
 
 const env = process.env;
 
@@ -18,8 +18,7 @@ const uri = getDBUrl(
 )
 const options = {}
 
-let client
-let clientPromise: Promise<MongoClient>
+let clientPromise
 
 if (process.env.NODE_ENV === 'development') {
   // In development mode, use a global variable so that the value
@@ -30,8 +29,7 @@ if (process.env.NODE_ENV === 'development') {
   clientPromise = global._mongoClientPromise
 } else {
   // In production mode, it's best to not use a global variable.
-  client = new MongoClient(uri, options)
-  clientPromise = client.connect()
+  clientPromise = MongoClient.connect(uri);
 }
 
 // Export a module-scoped MongoClient promise. By doing this in a
